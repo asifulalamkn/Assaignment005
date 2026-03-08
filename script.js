@@ -149,7 +149,43 @@ async function handleSearch() {
 }
 
 
+// Handle Tab Click
+function handleTabClick(e) {
+    const tab = e.target.dataset.tab;
+    
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    e.target.classList.add('active');
+    
+    currentTab = tab;
+    displayIssues();
+}
 
+// Display Issues
+function displayIssues() {
+    let filteredIssues = allIssues;
+    
+    if (currentTab === 'open') {
+        filteredIssues = allIssues.filter(issue => 
+            issue.status?.toLowerCase() === 'open'
+        );
+    } else if (currentTab === 'closed') {
+        filteredIssues = allIssues.filter(issue => 
+            issue.status?.toLowerCase() === 'closed'
+        );
+    }
+    
+    issuesCount.textContent = `${filteredIssues.length} Issues`;
+    issuesGrid.innerHTML = '';
+    
+    if (filteredIssues.length === 0) {
+        issuesGrid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #586069;">
+                <p style="font-size: 16px; margin-bottom: 8px;">No issues found</p>
+            </div>
+        `;
+        return;
+    }
+    
 
 
 
