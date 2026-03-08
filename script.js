@@ -107,7 +107,46 @@ async function fetchIssues() {
     }
 }
 
-
+// Handle Search
+async function handleSearch() {
+    searchTerm = searchInput.value.trim();
+    
+    if (!searchTerm) {
+        fetchIssues();
+        return;
+    }
+    
+    showLoading(true);
+    
+    try {
+        const response = await fetch(SEARCH_API(searchTerm));
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (Array.isArray(data)) {
+            allIssues = data;
+        } else if (data.issues && Array.isArray(data.issues)) {
+            allIssues = data.issues;
+        } else if (data.data && Array.isArray(data.data)) {
+            allIssues = data.data;
+        } else {
+            allIssues = [];
+        }
+        
+        displayIssues();
+        
+    } catch (error) {
+        console.error('Error searching issues:', error);
+        allIssues = [];
+        displayIssues();
+    } finally {
+        showLoading(false);
+    }
+}
 
 // Handle Tab Click
 function handleTabClick(e) {
