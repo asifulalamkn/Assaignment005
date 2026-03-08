@@ -73,39 +73,6 @@ function handleLogin(e) {
     }
 }
 
-// Fetch All Issues
-async function fetchIssues() {
-    showLoading(true);
-    
-    try {
-        const response = await fetch(ALL_ISSUES_API);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (Array.isArray(data)) {
-            allIssues = data;
-        } else if (data.issues && Array.isArray(data.issues)) {
-            allIssues = data.issues;
-        } else if (data.data && Array.isArray(data.data)) {
-            allIssues = data.data;
-        } else {
-            allIssues = [];
-        }
-        
-        displayIssues();
-        
-    } catch (error) {
-        console.error('Error fetching issues:', error);
-        allIssues = [];
-        displayIssues();
-    } finally {
-        showLoading(false);
-    }
-}
 
 // Handle Search
 async function handleSearch() {
