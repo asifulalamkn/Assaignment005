@@ -73,20 +73,12 @@ function handleLogin(e) {
     }
 }
 
-
-// Handle Search
-async function handleSearch() {
-    searchTerm = searchInput.value.trim();
-    
-    if (!searchTerm) {
-        fetchIssues();
-        return;
-    }
-    
+// Fetch All Issues
+async function fetchIssues() {
     showLoading(true);
     
     try {
-        const response = await fetch(SEARCH_API(searchTerm));
+        const response = await fetch(ALL_ISSUES_API);
         
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
@@ -107,13 +99,15 @@ async function handleSearch() {
         displayIssues();
         
     } catch (error) {
-        console.error('Error searching issues:', error);
+        console.error('Error fetching issues:', error);
         allIssues = [];
         displayIssues();
     } finally {
         showLoading(false);
     }
 }
+
+
 
 // Handle Tab Click
 function handleTabClick(e) {
